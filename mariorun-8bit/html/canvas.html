@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>Color Test</title>
+<style>
+/* Generated with GIMP Palette Export */
+body {
+    background-color: rgb(200,200,200)
+}
+.color1 { background-color: rgb(255, 0, 0) }
+.color2 { background-color: rgb(0, 0, 0) }
+.color3 { background-color: rgb(255, 255, 255) }
+.color4 { background-color: rgb(252, 160, 68) }
+.color5 { background-color: rgb(0, 0, 188) }
+.color6 { background-color: rgb(248, 184, 0) }
+.color7 { background-color: rgb(80, 48, 0) }
+.color8 { background-color: rgb(13, 13, 13) }
+.color9 { background-color: rgb(120, 120, 120) }
+
+#image {
+    height: 160px;
+    width: 160px;
+    background: url('full-sprites.png') 0px 0px;
+}
+
+</style>
+
+<link rel="shortcut icon" href="mario.ico" />
+    </head>
+    <body>
+        <table>
+            <tr><td>Color 1</td><td class="color1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+            <tr><td>Color 2</td><td class="color2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+            <tr><td>Color 3</td><td class="color3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+            <tr><td>Color 4</td><td class="color4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+            <tr><td>Color 5</td><td class="color5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+            <tr><td>Color 6</td><td class="color6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+            <tr><td>Color 7</td><td class="color7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+            <tr><td>Color 8</td><td class="color8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+            <tr><td>Color 9</td><td class="color9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+        </table>
+        <hr/>
+        <div id="demo">
+            <div id="image"> </div>
+            <canvas id="image"> </canvas>
+        </div>
+    <script>
+        const animateScript = () => {
+            const interval = 300
+            const frameWidth = 160
+            let position = null
+            typeof(animateScript.position) == 'undefined' ? position = 0 : position = animateScript.position
+            setInterval ( () => {
+                document.querySelector('div#image').style.backgroundPosition = `${position}px 0px`;
+                //we use the ES6 template literal to insert the variable "position"
+                if (position > -160 ) { 
+                    position = position - 160;
+                } else {
+                //we dencrement the position by 160 each time
+                position = 0;
+                }
+                animateScript.position = position
+                //reset the position to 0px, once position exceeds -160px
+            }, interval ); //end of setInterval
+        }
+        animateScript()
+        ////// Canvas
+        const mario = 
+    </script>
+    </body>
+</html>
+

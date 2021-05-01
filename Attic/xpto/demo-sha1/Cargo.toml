@@ -1,0 +1,11 @@
+[package]
+name = "bare-metal-wasm"
+version = "0.1.0"
+authors = ["Cliff L. Biffle <code@cliffle.com>"]
+edition = "2018"
+
+[dependencies]
+sha1 = "0.6.0"
+
+[lib]
+crate-type = ["cdylib"]

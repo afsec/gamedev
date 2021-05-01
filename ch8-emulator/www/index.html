@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Rust + Wasm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+  </style>
+
+<body>
+  <script>
+    const DEBUG = true
+    const debug = message => ((typeof (DEBUG) !== 'undefined') && (DEBUG === true)) ? (typeof (message) !== 'undefined') ? console.log(message) : false : false
+    var memory = new WebAssembly.Memory({ initial: 1, maximum: 10 });
+    window.Module = {}
+    // const logArrayElements(element, index, array) {
+    //   debug('a[' + index + '] = ' + element);
+    // }
+    ///
+    const wasm_console = () => {
+      const buffer_address = Module.CONSOLE_BUFFER.value;
+      const data = new Uint8ClampedArray(
+        Module.memory.buffer,
+        buffer_address,
+        4096,
+      )
+      let acquiredData = ""
+      for (let i = 0; i < 4096; i++) {
+        if (typeof (data[i]) !== "undefined" && data[i] !== 0) {
+          acquiredData += String.fromCharCode(data[i] / 1)
+        }
+      }
+      setTimeout(() => { console.warn(acquiredData) }, 200)
+
+      //   const buffer_address = instance.exports.BUFFER.value;
+      //   const image = new ImageData(
+      //     new Uint8ClampedArray(
+      //       instance.exports.memory.buffer,
+      //       buffer_address,
+      //       4 * width * height,
+      //     ),
+      //     width,
+      //   );
+
+    }
+    ///
+    fetch('chip8.wasm', {})
+      .then(response => response.arrayBuffer())
+      .then(bytes => WebAssembly.instantiate(bytes, { js: { mem: memory } }))
+      .then(results => {
+        Module.cpuMainLoop = results.instance.exports.cpuMainLoop
+        Module.keyboard_send_key = results.instance.exports.keyboard_send_key
+        // Module.get_log = results.instance.exports.get_log
+        Module.memory = results.instance.exports.memory;
+        Module.CONSOLE_BUFFER = results.instance.exports.CONSOLE_BUFFER;
+        Module.debug_exports = results.instance.exports;
+        // CPU Clock Generator
+        setInterval(() => {
+          const now = Math.floor(Date.now() / 1000)
+          const keyCodeFromAtomic = Module.cpuMainLoop(now)
+          debug(`Output: ${keyCodeFromAtomic}`)
+        }, 1000)
+      })
+
+    document.onkeydown = (evt) => {
+      evt = evt || window.event
+      let keyPressed = evt.keyCode || evt.which
+      debug(`Input: ${String.fromCharCode(keyPressed)}`)
+      Module.keyboard_send_key(keyPressed)
+
+    }
+  </script>
+</body>
+
+</html>

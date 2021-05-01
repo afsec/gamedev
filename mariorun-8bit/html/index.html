@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <title>Color Test</title>
+<style>
+/* Generated with GIMP Palette Export */
+body {
+    background-color: rgb(200,200,200)
+}
+.color1 { background-color: rgb(255, 0, 0) }
+.color2 { background-color: rgb(0, 0, 0) }
+.color3 { background-color: rgb(255, 255, 255) }
+.color4 { background-color: rgb(252, 160, 68) }
+.color5 { background-color: rgb(0, 0, 188) }
+.color6 { background-color: rgb(248, 184, 0) }
+.color7 { background-color: rgb(80, 48, 0) }
+.color8 { background-color: rgb(13, 13, 13) }
+.color9 { background-color: rgb(120, 120, 120) }
+
+div#demo {
+    background-color: #fff;
+    border: 1px dashed black;
+    width: 360px;
+    height: 640px;
+}
+
+div#image {
+    border-bottom: 2px dashed #006800;
+    height: 160px;
+    width: 160px;
+    background: url('full-sprites.png') 0px 0px;
+}
+
+div#sky {
+    width: 360px;
+    height: 480px;
+}
+
+</style>
+
+<link rel="shortcut icon" href="mario.ico" />
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td>Color 1</td><td class="color1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>Color 2</td><td class="color2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>Color 3</td><td class="color3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>Color 4</td><td class="color4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>Color 5</td><td class="color5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>Color 6</td><td class="color6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>Color 7</td><td class="color7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>Color 8</td><td class="color8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>Color 9</td><td class="color9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            </tr>
+        </table>
+        <hr/>
+        <div id="demo">
+            <div id="sky"></div>
+            <div id="image"></div>
+        </div>
+    <script>
+        const animateScript = () => {
+            const interval = 200
+            const frameWidth = 160
+            const maxPosition = -480
+            let position = -160
+            let count = 0
+            setInterval ( () => {
+                document.querySelector('div#image').style.backgroundPosition = `${position}px 0px`;
+                ((count % 2) == 0) ? document.querySelector('div#image').style.borderBottom = `2px dashed #006800`
+                : document.querySelector('div#image').style.borderBottom = `2px dotted #006800`
+                //we use the ES6 template literal to insert the variable "position"
+                if (position > maxPosition) { 
+                    position = position - frameWidth;
+                    //we dencrement the position by 160 each time
+                } else {
+                    position = (frameWidth * -1);
+                }
+                count = count + 1
+                //reset the position to 0px, once position exceeds -160px
+            }, interval ); //end of setInterval
+/////////
+//            document.getElementById("image").style.backgroundPosition = '-160px 0px';
+        }
+        document.querySelector('div#image').style.backgroundPosition = `0px 0px`;
+        setTimeout(() => {
+            animateScript()
+        }, 3000)
+
+//        document.querySelector('div#image').addEventListener('mouseover', (event) => {
+//            console.log(event)
+//            animateScript()
+//            setTimeout(() => {
+//                event.target.style.backgroundPosition = '0px 0px';
+//            }, 500);
+//        })
+////////////
+/*
+        tID = setInterval ( () => {
+            document.getElementById("image").style.backgroundPosition = `-${position}px 0px`;
+            //we use the ES6 template literal to insert the variable "position"
+            if (position < -160 ) { 
+                position = position - 160;
+            } else {
+            //we dencrement the position by 160 each time
+            position = 0;
+            }
+            //reset the position to 0px, once position exceeds -160px
+        }, interval ); //end of setInterval
+*/
+/////////
+
+
+
+    </script>
+    </body>
+</html>
+

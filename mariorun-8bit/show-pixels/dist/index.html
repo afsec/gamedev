@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        canvas {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" height="500" width="500"></canvas>
+
+    <script>
+
+        const WIDTH = 500;
+        const HEIGHT = 500;
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        fetch('/show_pixels.wasm')
+            .then((res) => res.arrayBuffer())
+            .then((ab) => WebAssembly.instantiate(ab))
+            .then(({ instance }) => {
+
+                instance.exports.memory.grow(100);              // make memory big enough
+                instance.exports.color(WIDTH, HEIGHT);
+
+                const data = new Uint8ClampedArray(instance.exports.memory.buffer, 0, WIDTH * HEIGHT * 4)
+                const imageData = new ImageData(data, 500, 500);
+
+                ctx.putImageData(imageData, 0, 0);
+            });
+    </script>
+</body>
+
+</html>

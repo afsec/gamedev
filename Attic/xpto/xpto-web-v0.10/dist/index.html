@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+  </style>
+
+<body>
+  <script>
+    var wasmInstatiate = {}
+
+    fetch('demo.wasm', {})
+      .then(response => response.arrayBuffer())
+      .then(bytes => WebAssembly.instantiate(bytes, {}))
+      .then(results => {
+        wasmInstatiate.cpuMainLoop = results.instance.exports.cpuMainLoop
+        wasmInstatiate.keyboard_send_key = results.instance.exports.keyboard_send_key
+        // CPU Clock Generator
+        setInterval(() => {
+          // const now = new Date().getSeconds()
+          // console.log(wasmInstatiate.cpuMainLoop(now))
+          const keyCodeFromAtomic = wasmInstatiate.cpuMainLoop()
+          console.log(`Output: ${keyCodeFromAtomic}`)
+        }, 100)
+      })
+
+    document.onkeydown = (evt) => {
+      evt = evt || window.event
+      let keyPressed = evt.keyCode || evt.which
+      console.log(`Input: ${String.fromCharCode(keyPressed)}`)
+      wasmInstatiate.keyboard_send_key(keyPressed)
+
+    }
+  </script>
+</body>
+
+</html>
